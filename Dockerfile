@@ -1,5 +1,8 @@
 ARG JL_VERSION=0.6.2
 
+
+## Stage 0 - Download and build Julia source code
+
 FROM lambci/lambda:build-python2.7
 
 ARG JL_VERSION
@@ -42,3 +45,14 @@ ENV JULIA_PKGDIR=/var/task/julia \
     PATH=/var/task/bin:$PATH
 
 RUN julia -e 'Pkg.init()'
+
+
+
+## Stage 1 - Copy Julia installation into clean image
+
+FROM lambci/lambda:build-python2.7
+
+COPY --from=0 /var/task/ /var/task/
+
+ENV JULIA_PKGDIR=/var/task/julia \
+    PATH=/var/task/bin:$PATH
