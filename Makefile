@@ -1,5 +1,9 @@
+JL_VERSION=0.6.2
+
 build:
-	docker build -t lambdajl .
+	docker build \
+		--build-arg JL_VERSION=$(JL_VERSION) \
+		-t octech/lambdajl:$(JL_VERSION) .
 
 shell:
-	docker run --rm -it -v $(PWD):/var/host lambdajl bash
+	docker run --rm -it -v $(PWD):/var/host octech/lambdajl:$(JL_VERSION) bash
