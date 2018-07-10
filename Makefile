@@ -1,4 +1,4 @@
-JL_VERSION=0.6.2
+JL_VERSION=0.6.3
 
 build:
 	docker build \
