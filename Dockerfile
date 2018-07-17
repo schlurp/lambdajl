@@ -1,4 +1,4 @@
-ARG JL_VERSION=0.6.3
+ARG JL_VERSION=0.6.4
 
 
 ## Stage 0 - Download and build Julia source code
