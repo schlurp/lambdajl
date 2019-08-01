@@ -1,9 +1,9 @@
-ARG JL_VERSION=0.6.4
+ARG JL_VERSION=1.1.1
 
 
 ## Stage 0 - Download and build Julia source code
 
-FROM lambci/lambda:build-python2.7
+FROM lambci/lambda:build-python3.7
 
 ARG JL_VERSION
 
@@ -35,22 +35,22 @@ ENV LAMBDAJL_MAKE \
              MARCH=core-avx-i
 
 RUN cd /var/src/julia \
- && $LAMBDAJL_MAKE -j2 julia-deps
+ && $LAMBDAJL_MAKE -j4 julia-deps
 
 RUN cd /var/src/julia \
- && $LAMBDAJL_MAKE -j2 \
+ && $LAMBDAJL_MAKE -j4 \
  && $LAMBDAJL_MAKE install
 
 ENV JULIA_PKGDIR=/var/task/julia \
     PATH=/var/task/bin:$PATH
 
-RUN julia -e 'Pkg.init()'
+RUN julia -e 'using Pkg; Pkg.update()'
 
 
 
 ## Stage 1 - Copy Julia installation into clean image
 
-FROM lambci/lambda:build-python2.7
+FROM lambci/lambda:build-python3.7
 
 COPY --from=0 /var/task/ /var/task/
 #COPY --from=0 /var/src/ /var/src/
